@@ -1,0 +1,7 @@
+комп в 4214:
+gcc (x86_64-posix-seh, Built by strawberryperl.com project) 8.3.0
+AMD64 Windows 10
+дом:
+x86_64 GNU/Linux (платформа общ. назначения)
+gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0
+

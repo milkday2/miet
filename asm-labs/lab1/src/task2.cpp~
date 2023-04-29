@@ -1,0 +1,6 @@
+#include <cstdio>
+
+int main(void){
+    puts("pin-23,");
+    return 0;
+}

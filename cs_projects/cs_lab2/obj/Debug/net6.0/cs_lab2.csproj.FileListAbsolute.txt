@@ -1,0 +1,15 @@
+/home/sinh/Documents/cs_projects/cs_lab2/bin/Debug/net6.0/cs_lab2
+/home/sinh/Documents/cs_projects/cs_lab2/bin/Debug/net6.0/cs_lab2.deps.json
+/home/sinh/Documents/cs_projects/cs_lab2/bin/Debug/net6.0/cs_lab2.runtimeconfig.json
+/home/sinh/Documents/cs_projects/cs_lab2/bin/Debug/net6.0/cs_lab2.dll
+/home/sinh/Documents/cs_projects/cs_lab2/bin/Debug/net6.0/ref/cs_lab2.dll
+/home/sinh/Documents/cs_projects/cs_lab2/bin/Debug/net6.0/cs_lab2.pdb
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/cs_lab2.csproj.AssemblyReference.cache
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/cs_lab2.GeneratedMSBuildEditorConfig.editorconfig
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/cs_lab2.AssemblyInfoInputs.cache
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/cs_lab2.AssemblyInfo.cs
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/cs_lab2.csproj.CoreCompileInputs.cache
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/cs_lab2.dll
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/ref/cs_lab2.dll
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/cs_lab2.pdb
+/home/sinh/Documents/cs_projects/cs_lab2/obj/Debug/net6.0/cs_lab2.genruntimeconfig.cache

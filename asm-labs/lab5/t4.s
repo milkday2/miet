@@ -23,7 +23,7 @@ call scanf
 
 movl -4(%rbp),%ebx # N -> ebx
 movl -8(%rbp),%r13d # x0 -> r13d
-movl $2,-8(%rbp)
+movl $2,-8(%rbp) # probably not needed
 movl $0,%r12d # r12d - counter
 begin_loop:
 test $1,%r13d

@@ -55,17 +55,12 @@ void F(int node, int **graph, struct f_tuple *f, int nodes) {
   f[node].min = 0x7fffffff;
   for (int i = 0; i < nodes; i++) {
     if (graph[i][node]) {
-      if (f[i].set) {
-        if (graph[i][node] + f[i].min < f[node].min) {
-          f[node].min = graph[i][node] + f[i].min;
-          f[node].min_index = i;
-        }
-      } else {
+      if (!f[i].set) {
         F(i, graph, f, nodes);
-        if (graph[i][node] + f[i].min < f[node].min) {
+      }
+      if (graph[i][node] + f[i].min < f[node].min) {
           f[node].min = graph[i][node] + f[i].min;
           f[node].min_index = i;
-        }
       }
     }
   }

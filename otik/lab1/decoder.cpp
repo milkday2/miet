@@ -1,8 +1,10 @@
 #include <cstdint>
 #include <fstream>
-#include <ios>
 #include <iostream>
 #include <string>
+#include <vector>
+#include "kamd.h"
+#include "otikutils.h"
 
 int decoder(std::string);
 
@@ -17,59 +19,61 @@ int main(int argc, char* argv[]) {
 }
 
 int decoder(std::string path) {
-    std::ifstream fileIn(path, std::ios::in | std::ios::binary);
+    std::ifstream fileIn(path.c_str(), std::ios::in | std::ios::binary);
     if (!fileIn.good()) {
         std::cout << "File not found" << std::endl;
         return 0;
     }
 
+    kamd_header header;
     char sig[4];
     fileIn.read(sig, 4);
     if (sig[0] != 0x4b || sig[1] != 0x61 || sig[2] != 0x4D || sig[3] != 0x64) {
-        std::cout << "signature mismatch!\n";
+        std::cout << "signature mismatch\n";
         return 0;
     }
 
-    char* headervars = new char[24];
-    fileIn.seekg(0, std::ios::beg);
-    fileIn.read(headervars, 24);
-    uint32_t compression_method = headervars[6] | (headervars[7] << 8) | (headervars[8] << 16) | (headervars[9] << 24);
-    uint32_t filtering_method = headervars[10] | (headervars[11] << 8) | (headervars[12] << 16) | (headervars[13] << 24);
-    uint32_t filesize = headervars[17] | (headervars[16] << 8) | (headervars[15] << 16) | (headervars[14] << 24);
+    fileIn.seekg(4, std::ios::beg);
+    fileIn.read((char*)header.version, 2);
+    fileIn.read((char*)header.comp_method, 2);
+    fileIn.read((char*)header.intf_protection, 2);
+    unsigned char temp[4];
+    fileIn.read((char*)temp, 4);
+    header.file_size = lendian2int(temp);
+    fileIn.read((char*)temp, 2);
+    header.filename_size = lendian2sint(temp);
+    fileIn.read((char*)temp, 2);
+    header.c_overhead_size = lendian2sint(temp);
+    fileIn.read((char*)temp, 2);
+    header.i_overhead_size = lendian2sint(temp);
 
-    uint16_t filenamesize = headervars[18] | (headervars[19] << 8);
-    uint16_t compression_data_size = headervars[20] | (headervars[21] << 8);
-    uint16_t filtering_data_size = headervars[22] | (headervars[23] << 8);
-
-    char* filename = new char[filenamesize];
-    fileIn.seekg(24,std::ios::beg);
-    fileIn.read(filename, filenamesize);
-
-
-
+    char* filename = new char[header.filename_size + 1];
+    fileIn.seekg(20,std::ios::beg);
+    fileIn.read(filename, header.filename_size);
+    filename[header.filename_size] = '\0';
    
     std::ofstream fileOut(filename, std::ios::out | std::ios::binary);
     if (!fileOut.good()) {
-        std::cout << "Error opening file" << std::endl;
+        std::cout << "couldn't open/create " << filename << '\n';
         return 0;
     }
-
-
-    if (compression_method == 0 && filtering_method == 0) {
-
-
-        char b[1024];
-        for (int i = 0; i < filesize/1024 + 1; i++) {
-            fileIn.read(b, 1024);
-            fileOut.write(b, 1024);
-        }
-     
-    }
-
-    delete[] headervars;
     delete[] filename;
+
+    if (*((uint16_t*)header.comp_method) == 0 && *((uint16_t*)header.intf_protection) == 0) {
+        int chunk_size = header.file_size > 64 * 1024 ? 64 * 1024 : header.file_size;
+        std::vector<unsigned char> buffer(chunk_size);
+        fileIn.seekg(20 + header.filename_size + header.c_overhead_size + header.i_overhead_size, std::ios::beg);
+		  while (fileIn.good()) {
+			  fileIn.read((char*)buffer.data(), chunk_size);
+			  std::streamsize s = fileIn.gcount();
+			  if (s > 0) {
+				  fileOut.write((char*)buffer.data(), s);
+			  }
+		  }
+    }
 
     fileIn.close();
     fileOut.close();
     return 1;
 }
+
